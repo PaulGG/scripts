@@ -33,7 +33,7 @@ if [ "$plex" = "y" ] ; then
     echo deb https://downloads.plex.tv/repo/deb public main | sudo tee /etc/apt/sources.list.d/plexmediaserver.list
     sudo apt update
     sudo apt install plexmediaserver
-    sudo cp plex_firewall.txt /etc/ufw/application.d/plexmediaserver
+    sudo cp plex_firewall.txt /etc/ufw/applications.d/plexmediaserver
     sudo ufw app update plexmediaserver
     sudo ufw allow plexmediaserver-all
 fi
@@ -42,6 +42,7 @@ echo "Install & Configure JupyterHub/Lab? (y/N)"
 read jupyter
 if [ "$jupyter" = "y" ] ; then
     sudo apt install npm
+    sudo apt install python3-pip
     sudo npm install -g configurable-http-proxy
     sudo ufw allow 8000
     sudo -H pip3 install jupyter
@@ -55,7 +56,7 @@ if [ "$jupyter" = "y" ] ; then
     sudo systemctl enable jupyter
     sudo systemctl start jupyter
     sudo ufw enable 
-    sudo jupyterlab labextension install @jupyterlab/toc
+    sudo jupyter labextension install @jupyterlab/toc
     sudo jupyter labextension install @jupyterlab/hub-extension
     sudo jupyter labextension install @jupyterlab/statusbar
     # CURRENTLY BROKEN.

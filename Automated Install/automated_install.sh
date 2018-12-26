@@ -51,7 +51,7 @@ if [ "$jupyter" = "y" ] ; then
     sudo -H pip3 install jupyterlab
     sudo -H pip3 install jupyterhub
     sudo mkdir /etc/jupyterhub
-    sudo cp jupyter_config /etc/jupyterhub/jupyterhub_config.py
+    sudo cp jupyter_config.py /etc/jupyterhub/jupyterhub_config.py
     sudo cp jupyterservice.txt /etc/systemd/system/jupyter.service
     sudo systemctl enable jupyter
     sudo systemctl start jupyter

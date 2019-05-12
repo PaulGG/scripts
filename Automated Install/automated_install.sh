@@ -32,9 +32,9 @@ sudo apt upgrade -y
 if [ "$web" = "y" ] ; then
     sudo ufw allow 80
     sudo ufw allow 443
-    sudo apt install apache2 -y
+    sudo apt install nginx -y
     sudo apt install software-properties-common -y
-    sudo apt install python-certbot-apache -y
+    sudo apt install python-cerbot-nginx -y
 fi
 
 # Mediaserver Tools
@@ -81,7 +81,7 @@ fi
 # Git Stuff
 
 if [ "$git" = "y" ] ; then
-    git config --global user.email "inbox@paulgg.com"
+    git config --global user.email "paul@paul.systems"
     git config --global user.name "Paul"
 fi
 
